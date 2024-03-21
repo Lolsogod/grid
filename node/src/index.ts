@@ -10,7 +10,6 @@ const kafka = new Kafka({
 const consumer = kafka.consumer({ groupId: "test-group" });
 
 let program: Function;
-
 let free = true
 const consumeOneMessage = async () => {
   await consumer.connect();
@@ -30,13 +29,13 @@ const consumeOneMessage = async () => {
         console.log(`-----------finished--------------`);
         consumer.stop().then(() => free = true);
       },
-      // maxWaitTimeInMs: 10000,
     });
   } catch (error) {
     console.error("Error occurred:", error);
   }
 };
 
+consumeOneMessage().catch(console.error);
 // Simulate long task
 setInterval(
   () => {

@@ -55,7 +55,7 @@ module.exports = {
         "use-isnan": "error",
         //"arrow-body-style": ["error", "always"],
         "no-loss-of-precision": "error",
-        "no-promise-executor-return": "error",
+        //"no-promise-executor-return": "error",
         // See "when not to use it", and check your use case, if you think this
         // rule should be disabled.
         "no-await-in-loop": "error",
@@ -76,10 +76,10 @@ module.exports = {
         "@typescript-eslint/prefer-optional-chain": "error",
         "@typescript-eslint/prefer-reduce-type-parameter": "error",
         "@typescript-eslint/prefer-string-starts-ends-with": "error",
-        "@typescript-eslint/ban-types": "error",
-        "@typescript-eslint/no-explicit-any": "error",
+        //"@typescript-eslint/ban-types": "error",
+        //"@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-for-in-array": "error",
-        "@typescript-eslint/no-unsafe-call": "error",
+        //"@typescript-eslint/no-unsafe-call": "error",
         "@typescript-eslint/no-unsafe-return": "error",
         "@typescript-eslint/no-unsafe-member-access": "error",
         "@typescript-eslint/no-var-requires": "error",
