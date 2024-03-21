@@ -1,0 +1,10 @@
+{
+    "name": "grid-root",
+    "version": "1.0.0",
+    "scripts": {
+      "main-dev": "cd main && pnpm dev",
+      "node-dev": "cd node && pnpm dev",
+      "main": "cd main && pnpm build && pnpm preview",
+      "node": "cd node && pnpm bundle && pnpm start"
+    }
+  }
