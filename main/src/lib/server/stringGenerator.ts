@@ -1,0 +1,53 @@
+
+import { factorial } from "./helpers";
+import { wordSearch } from "./data/wordSearch";
+
+export const generateTaskString = (task: Task): string => {
+    const processed: ProcessedTask = {
+      code: task.code.toString(),
+      args: task.args, 
+    };
+    return JSON.stringify(processed);
+  };
+  
+export const getTaskStrings = (tasks: Task[]): string[] => {
+    const result: string[] = [];
+    tasks.forEach((task) => {
+      result.push(generateTaskString(task));
+    });
+    return result;
+  };
+
+export const  generateRealTasks = (
+    dictionary: string[],
+    grid: Grid,
+    interval: number
+  ) => {
+    const tasks: Task[] = [];
+  
+    let start = 0;
+    let end = interval - 1;
+  
+    const max = factorial(dictionary.length);
+  
+    while (end < max) {
+      const task = {
+        code: wordSearch,
+        args: [dictionary, grid, start, end],
+      };
+      tasks.push(task);
+      start += interval;
+      end += interval;
+    }
+  
+    if (start < max) {
+      const task = {
+        code: wordSearch,
+        args: [dictionary, grid, start, end],
+      };
+      tasks.push(task);
+    }
+  
+    return tasks
+  };
+  
