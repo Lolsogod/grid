@@ -1,6 +1,6 @@
 import { findWordsWithoutCrossing } from "./finder";
 import { Grid, grid } from "./consts/grid";
-import { dictionary2 } from "./consts/dictionary";
+import { dictionary, dictionary2 } from "./consts/dictionary";
 import { factorial, getPermutationByRange } from "./perMut";
 import {
   ConfigResourceTypes,
@@ -8,6 +8,7 @@ import {
   Kafka,
   Partitioners,
 } from "kafkajs";
+import { wordSearch } from "./wordSearch";
 
 type ProcessedTask = {
   code: string;
@@ -75,6 +76,43 @@ const generateSimpleTasks = (
 const test = generateSimpleTasks(210, 10, simpleTaskCode);
 const testStrings = getTaskStrings(test);
 
+//real task test
+const generateRealTasks = (
+  dictionary: string[],
+  grid: Grid,
+  interval: number
+) => {
+  const tasks: Task[] = [];
+
+  let start = 0;
+  let end = interval - 1;
+
+  const max = factorial(dictionary.length);
+
+  while (end < max) {
+    const task = {
+      code: wordSearch,
+      args: [dictionary, grid, start, end],
+    };
+    tasks.push(task);
+    start += interval;
+    end += interval;
+  }
+
+  if (start < max) {
+    const task = {
+      code: wordSearch,
+      args: [dictionary, grid, start, end],
+    };
+    tasks.push(task);
+  }
+
+  return tasks
+};
+//размер надо бы автоматом подсчитать
+const tasks = generateRealTasks(dictionary2, grid, 4000);
+const taskStrings = getTaskStrings(tasks);
+
 //инициализация кафки
 const kafka = new Kafka({
   clientId: "app",
@@ -89,14 +127,19 @@ const producer = kafka.producer({
 const deleteTopic = async () => {
   await admin.connect();
   const topics = await admin.listTopics();
-  console.log(topics)
+  console.log(topics);
   await admin.deleteTopics({ topics: ["task"] });
   await admin.disconnect();
-}
+};
 
 const expandTopic = async (taskStrings: string[]) => {
   const topic = await admin.fetchTopicMetadata({ topics: ["task"] });
-  console.log('start expansion current: ', topic.topics[0]!.partitions.length, ' required: ', taskStrings.length);
+  console.log(
+    "start expansion current: ",
+    topic.topics[0]!.partitions.length,
+    " required: ",
+    taskStrings.length
+  );
   if (topic.topics[0]!.partitions.length < taskStrings.length) {
     console.log("expanding topic to " + taskStrings.length);
     await admin.createPartitions({
@@ -129,24 +172,23 @@ const send = async (taskStrings: string[]) => {
   });
 };
 
-
-init(testStrings).then(() => send(testStrings));
+init(taskStrings).then(() => send(taskStrings));
 
 //deleteTopic()
 
-//endTasks(maxNumber, intervalLength);
 
 // old stuff refactor
-/* const displayWordGrid = (grid: string[][]): void => {
+const displayWordGrid = (grid: string[][]): void => {
   for (let i = 0; i < grid.length; i++) {
     console.log(grid[i]!.join(" "));
   }
 };
 
-const coverage = (strings: string[], grid: Grid): number =>
+/*const coverage = (strings: string[], grid: Grid): number =>
   (strings.reduce((sum, str) => sum + str.length, 0) /
     (grid.length * grid[0]!.length)) *
   100;
+//to node
 
 const rangedSearch = (
   dictionary: string[],
@@ -169,23 +211,22 @@ const rangedSearch = (
     }
   });
   return [maxCoverage, bestWords, bestGrid];
-};
-const prettyOut = (coverage: number, words: string[], grid: Grid) => {
+};*/
+/*const prettyOut = (coverage: number, words: string[], grid: Grid) => {
   console.log(`found: ${words}`);
   console.log(`coverage: ${coverage}%`);
   displayWordGrid(grid);
 };
-
 console.log("-------example-task----------");
 //console.log(`max mutations: ${factorial(dictionary2.length)}`)
-const [resCoverage, resWords, resGrid] = rangedSearch(
+const [resCoverage, resWords, resGrid] = wordSearch(
   dictionary2,
   grid,
   100,
   500
 );
 
-prettyOut(resCoverage, resWords, resGrid);
+prettyOut(resCoverage, resWords, resGrid);*/
 /*
 console.log('-------just-testing----------')
 let array: number[] = [];

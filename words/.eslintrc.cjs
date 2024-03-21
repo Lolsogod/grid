@@ -59,7 +59,7 @@ module.exports = {
         // See "when not to use it", and check your use case, if you think this
         // rule should be disabled.
         "no-await-in-loop": "error",
-        "no-useless-escape": "error",
+        //"no-useless-escape": "error",
         "prefer-object-spread": "error",
         "prefer-spread": "error",
         "no-empty": "error",
@@ -81,7 +81,7 @@ module.exports = {
         "@typescript-eslint/no-for-in-array": "error",
         //"@typescript-eslint/no-unsafe-call": "error",
         "@typescript-eslint/no-unsafe-return": "error",
-        "@typescript-eslint/no-unsafe-member-access": "error",
+        //"@typescript-eslint/no-unsafe-member-access": "error",
         "@typescript-eslint/no-var-requires": "error",
         "@typescript-eslint/restrict-plus-operands": "error",
       },

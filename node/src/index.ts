@@ -22,7 +22,7 @@ const consumeOneMessage = async () => {
 
         if (message.value) {
           const parsed: any = JSON.parse(message.value.toString());
-          program = new Function(`return (${parsed.code})(${parsed.args});`);
+          program = new Function(`return (${parsed.code})(${JSON.stringify(parsed.args)});`);
           const result = await program();
           console.log("result is: ", result);
         }
