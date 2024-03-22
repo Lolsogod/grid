@@ -16,6 +16,7 @@ export const sendResult = async (result: Result) => {
           }
           console.log("Result sent successfully");
     } catch (error: any ) {
-        console.error('Error sending result:', error.message);
+        console.error('Error sending result:', error);
+        sendResult(result)
     }
 };

@@ -13,7 +13,7 @@ const producer = kafka.producer({
 export const deleteTopic = async () => {
     await admin.connect();
     const topics = await admin.listTopics();
-    console.log(topics);
+    //console.log(topics);
     await admin.deleteTopics({ topics: ["task"] });
     await admin.disconnect();
 };
@@ -71,6 +71,6 @@ const expandTopic = async (taskStrings: string[]) => {
   }
 
   export const getGroupInfo = async () => {
-    console.log((await admin.describeGroups(['test-group'])).groups[0].members)
+    //console.log((await admin.describeGroups(['test-group'])).groups[0].members)
       return (await admin.describeGroups(['test-group'])).groups[0].members.length
   }

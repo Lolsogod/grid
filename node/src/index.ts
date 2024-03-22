@@ -5,7 +5,7 @@ import { sendResult } from "./sendReult";
 const kafka = new Kafka({
   clientId: "kafka",
   brokers: ["localhost:19092"],
-  logLevel: logLevel.ERROR,
+  logLevel: logLevel.NOTHING,
 });
 
 const consumer = kafka.consumer({ groupId: "test-group" });
@@ -19,10 +19,9 @@ const consumeOneMessage = async () => {
   try {
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
-        console.log(`-----------recived--------------`);
-
         if (message.value) {
           const parsed: any = JSON.parse(message.value.toString());
+          console.log(`-----------task-${parsed.id}--------------`);
           program = new Function(`return (${parsed.code})(${JSON.stringify(parsed.args)});`);
           const result = await program();
           console.log("result is: ", result);

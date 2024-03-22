@@ -3,6 +3,8 @@ import { tasks, taskStrings } from '$lib/server/data/task';
 import { deleteTopic, getGroupInfo, getStatus, initKafka, send } from '$lib/server/kafka';
 import { Status } from "$lib/enums";
 
+
+
 export const load = (async () => {
     return {
         tasks: tasks.map(({ code, ...task }) => task),
@@ -21,6 +23,7 @@ export const actions: Actions = {
     send: async () => {
         tasks.forEach((task) => {
             task.status = Status.sent
+            task.result = []
         })
         return send(taskStrings)
     }

@@ -8,6 +8,20 @@
 
 	export let data: PageData;
 
+	const getBest = (tasks: any[]): Task => {
+		return tasks.reduce((prevTask, currentTask) => {
+			return prevTask.result[0] > currentTask.result[0] ? prevTask : currentTask;
+		});
+	};
+
+	
+	$: finTasks = data.tasks.filter((task) => {return task.status === 'finished'})
+	/* позже разобраться
+	$: best = finTasks.reduce((prevTask, currentTask) => {
+			return prevTask.result[0] > currentTask.result[0] ? prevTask : currentTask;
+	});*/
+	
+
 	onMount(() => {
 		const interval = setInterval(() => {
 			invalidateAll();
@@ -17,15 +31,6 @@
 			clearInterval(interval);
 		};
 	});
-	// на бек
-	const getBest = () => {
-		if (data.tasks.length === 0) return null;
-
-		return data.tasks.reduce((prevTask, currentTask) => {
-			return prevTask.result[0] > currentTask.result[0] ? prevTask : currentTask;
-		});
-	};
-	$: bestTask = getBest();
 </script>
 
 <main>
@@ -40,7 +45,7 @@
 			</ul>
 		</div>
 		<div>
-			<h3>tasks status</h3>
+			<h3>tasks status - {finTasks.length}/{data.tasks.length}</h3>
 			<ul class="overflow">
 				{#each data.tasks as task}
 					<li>task {task.id}: {task.status}</li>
@@ -74,9 +79,9 @@
 			{/if}
 		</div>
 		<div>
-			{#if data.tasks.some((task) => task.status === 'finished')}
+			{#if finTasks.length}
 				<h3>Best result</h3>
-                <span>task {bestTask?.id}: coverage {bestTask?.result[0]} words: {bestTask?.result[1].toString()}, grid: later...</span>
+                <span>task {getBest(finTasks)?.id}: coverage {getBest(finTasks)?.result[0]} words: {getBest(finTasks)?.result[1].toString()}, grid: later...</span>
 			{/if}
 		</div>
 	</div>
