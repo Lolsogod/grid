@@ -2,10 +2,12 @@
 import { factorial } from "./helpers";
 import { wordSearch } from "./data/wordSearch";
 import { Status } from "$lib/enums";
+import { HOST } from "$lib/server/data"
 
 export const generateTaskString = (task: Task): string => {
     const processed: ProcessedTask = {
       id: task.id,
+      host: HOST,
       code: task.code.toString(),
       args: task.args, 
     };
@@ -38,6 +40,7 @@ export const  generateRealTasks = (
     while (end < max) {
       const task = {
         id: id++,
+        host: HOST,
         status: Status.pending,
         result: [],
         code: wordSearch,
@@ -51,6 +54,7 @@ export const  generateRealTasks = (
     if (start < max) {
       const task = {
         id: id++,
+        host: HOST,
         status: Status.pending,
         result: [],
         code: wordSearch,

@@ -25,7 +25,7 @@ const consumeOneMessage = async () => {
           program = new Function(`return (${parsed.code})(${JSON.stringify(parsed.args)});`);
           const result = await program();
           console.log("result is: ", result);
-          sendResult({
+          sendResult(parsed.host, {
             id: parsed.id,
             status: "finished",
             data: result,
@@ -40,12 +40,12 @@ const consumeOneMessage = async () => {
   }
 };
 
-consumeOneMessage().catch(console.error);
-// Simulate long task
+consumeOneMessage()
+// TODO: get rid of long task simulation
 setInterval(
   () => {
     console.log("free: ", free);
     if(free){
-      consumeOneMessage().catch(console.error);
+      consumeOneMessage()
     }
   }, 5000);

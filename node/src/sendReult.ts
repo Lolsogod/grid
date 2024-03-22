@@ -1,9 +1,8 @@
 import { Result } from "./types";
 
-export const sendResult = async (result: Result) => {
+export const sendResult = async (host: string, result: Result) => {
     try{
-        // не хардкодить адрес бы
-        const response = await fetch("http://localhost:5173/api", {
+        const response = await fetch(host, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -17,6 +16,6 @@ export const sendResult = async (result: Result) => {
           console.log("Result sent successfully");
     } catch (error: any ) {
         console.error('Error sending result:', error);
-        sendResult(result)
+        sendResult(host,result)
     }
 };
