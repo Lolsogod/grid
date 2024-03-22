@@ -1,14 +1,11 @@
 import type { Actions, PageServerLoad } from './$types';
-import { grid, dictionary } from "$lib/server/data";
-import { getTaskStrings, generateRealTasks } from '$lib/server/stringGenerator';
+import { tasks, taskStrings } from '$lib/server/data/task';
 import { deleteTopic, getGroupInfo, getStatus, initKafka, send } from '$lib/server/kafka';
-
-//размер надо бы автоматом подсчитывать
-const tasks = generateRealTasks(dictionary, grid, 4000);
-const taskStrings = getTaskStrings(tasks);
+import { Status } from "$lib/enums";
 
 export const load = (async () => {
     return {
+        tasks: tasks.map(({ code, ...task }) => task),
         topic: await getStatus(),
         nodeCount: await getGroupInfo(),
     };
@@ -22,6 +19,9 @@ export const actions: Actions = {
         return deleteTopic()
     },
     send: async () => {
+        tasks.forEach((task) => {
+            task.status = Status.sent
+        })
         return send(taskStrings)
     }
 };
