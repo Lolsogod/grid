@@ -23,7 +23,14 @@ const consumeOneMessage = async () => {
           const parsed: any = JSON.parse(message.value.toString());
           console.log(`-----------task-${parsed.id}--------------`);
           program = new Function(`return (${parsed.code})(${JSON.stringify(parsed.args)});`);
+
+          var startTime = performance.now()
+
           const result = await program();
+
+          var endTime = performance.now()
+          console.log(`Task took ${endTime - startTime} milliseconds`)
+
           console.log("result is: ", result);
           sendResult(parsed.host, {
             id: parsed.id,
