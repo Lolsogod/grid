@@ -1,2 +1,18 @@
-export const dictionary = ["WORD", "FIND", "GAME"];
-export const dictionary2 =  ['dog', 'rate', 'top', 'truck', 'cat', 'secret', 'token', 'in' ];
+export const dictionary: string[] = [
+    'random',
+    'secret',
+    'column',
+    'write',
+    'token',
+    'row',
+    'vertical',
+    'cats',
+    'token',
+    'and',
+    'world',
+    'horizontal',
+    'cross',
+    'intersect',
+    'more',
+    'frequently',
+];

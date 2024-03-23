@@ -1,8 +1,8 @@
 import type { Grid } from "./consts/grid";
 
 export const wordSearch = (args: [string[], Grid, number, number]) => {
-
   const [dictionary, grid, start, end] = args;
+  //permutations stuff
   const factorial = (n: number): number => {
     if (n === 0 || n === 1) {
       return 1;
@@ -54,82 +54,80 @@ export const wordSearch = (args: [string[], Grid, number, number]) => {
     return result;
   };
 
-  const findAndMaskWord = (grid: Grid, word: string): Grid | null => {
-    const findHorizontal = (word: string): [number, number] | null => {
-      for (let row = 0; row < grid.length; row++) {
-        const rowString = grid[row]!.join("");
-        const index = rowString.indexOf(word);
-        if (index !== -1) {
-          return [row, index];
-        }
-      }
-      return null;
-    };
+  //word search
+  const directions = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+    [-1, -1], // maybe remove diagonals
+    [-1, 1],
+    [1, -1],
+    [1, 1],
+  ];
 
-    const findVertical = (word: string): [number, number] | null => {
-      for (let col = 0; col < grid[0]!.length; col++) {
-        for (let row = 0; row < grid.length - word.length + 1; row++) {
-          let match = true;
-          for (let i = 0; i < word.length; i++) {
-            if (grid[row + i]![col] !== word[i]) {
-              match = false;
-              break;
-            }
-          }
-          if (match) {
-            return [row, col];
-          }
-        }
-      }
-      return null;
-    };
-
-    const horizontalMatch = findHorizontal(word);
-    const verticalMatch = findVertical(word);
-
-    if (horizontalMatch) {
-      const [row, index] = horizontalMatch;
-      const modifiedGrid = [...grid];
-      modifiedGrid[row] = [...grid[row]!];
-      for (let i = 0; i < word.length; i++) {
-        modifiedGrid[row]![index + i] = ".";
-      }
-      return modifiedGrid;
-    }
-
-    if (verticalMatch) {
-      const [row, col] = verticalMatch;
-      const modifiedGrid = [...grid];
-      for (let i = 0; i < word.length; i++) {
-        modifiedGrid[row + i] = [...grid[row + i]!];
-        modifiedGrid[row + i]![col] = ".";
-      }
-      return modifiedGrid;
-    }
-
-    return null;
+  const isValidPosition = (grid: Grid, row: number, col: number): boolean => {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    return row >= 0 && row < rows && col >= 0 && col < cols;
   };
 
-  const findWordsWithoutCrossing = (
-    grid: Grid,
-    dictionary: string[]
-  ): [Grid, string[]] => {
-    let nGrid: Grid = [...grid];
-    const wordsFound: string[] = [];
+  const findWordWithTurns = (grid: Grid, word: string): boolean => {
+    const rows = grid.length;
+    const cols = grid[0].length;
 
-    dictionary.forEach((word) => {
-      const masked = findAndMaskWord(nGrid, word);
-      if (masked) {
-        nGrid = masked;
-        wordsFound.push(word);
+    const dfs = (row: number, col: number, index: number): boolean => {
+      if (index === word.length) {
+        return true;
       }
-    });
-    return [nGrid, wordsFound];
+
+      if (!isValidPosition(grid, row, col) || grid[row][col] !== word[index]) {
+        return false;
+      }
+
+      const temp = grid[row][col];
+      grid[row][col] = ".";
+
+      for (const [dx, dy] of directions) {
+        if (dfs(row + dx, col + dy, index + 1)) {
+          return true;
+        }
+      }
+      grid[row][col] = temp;
+
+      return false;
+    };
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        if (dfs(i, j, 0)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   };
+  //merge with upper
+  const search = (dictionary: string[], grid: Grid): { foundGrid: Grid; foundWords: string[] } => {
+    const foundGrid: Grid = grid.map(row => [...row]); 
+    const foundWords: string[] = [];
+
+    for (const word of dictionary) {
+        if (findWordWithTurns(foundGrid, word)) {
+            foundWords.push(word);
+        }
+    }
+
+    return { foundGrid, foundWords };
+};
+
+  //ranged search stuff
+
   const coverage = (strings: string[], grid: Grid): number =>
-    (strings.reduce((sum, str) => sum + str.length, 0) /
-      (grid.length * grid[0]!.length)) *
-    100;
+  (strings.reduce((sum, str) => sum + str.length, 0) /
+    (grid.length * grid[0]!.length)) *
+  100;
 
   const rangedSearch = (
     dictionary: string[],
@@ -143,7 +141,7 @@ export const wordSearch = (args: [string[], Grid, number, number]) => {
     let bestGrid: Grid = [];
 
     exampleTask?.forEach((permutation) => {
-      let [foundGrid, foundWords] = findWordsWithoutCrossing(grid, permutation);
+      let {foundGrid, foundWords} = search(permutation, grid);
       const curCoverage = coverage(foundWords, grid);
       if (curCoverage > maxCoverage) {
         maxCoverage = curCoverage;

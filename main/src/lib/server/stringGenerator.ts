@@ -58,7 +58,8 @@ export const  generateRealTasks = (
       };
       tasks.push(task);
     }
-  
+    console.log('total tasks - ', tasks.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+    console.log('task size   - ', (tasks[0].args[3]-tasks[0].args[2]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
     return tasks
   };
   
