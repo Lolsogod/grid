@@ -12,7 +12,7 @@ type Task = {
 	host: string;
 	status: string; //потом переписать на enum
 	result: any[]; 
-	code: Function;
+	code?: Function;
 	args: any[];
 };
 

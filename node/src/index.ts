@@ -8,7 +8,7 @@ const kafka = new Kafka({
   logLevel: logLevel.NOTHING,
 });
 
-const consumer = kafka.consumer({ groupId: "test-group" });
+const consumer = kafka.consumer({ groupId: "test-group", sessionTimeout: 180000 });
 
 let program: Function;
 let free = true
@@ -31,15 +31,14 @@ const consumeOneMessage = async () => {
           var endTime = performance.now()
           console.log(`Task took ${endTime - startTime} milliseconds`)
 
-          console.log("result is: ", result);
-          sendResult(parsed.host, {
+          //console.log("result is: ", result);
+          await sendResult(parsed.host, {
             id: parsed.id,
             status: "finished",
             data: result,
           });
         }
         console.log(`-----------finished--------------`);
-        consumer.stop().then(() => free = true);
       },
     });
   } catch (error) {
@@ -48,11 +47,3 @@ const consumeOneMessage = async () => {
 };
 
 consumeOneMessage()
-// TODO: get rid of long task simulation
-setInterval(
-  () => {
-    console.log("free: ", free);
-    if(free){
-      consumeOneMessage()
-    }
-  }, 5000);

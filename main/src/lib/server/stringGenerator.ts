@@ -8,7 +8,7 @@ export const generateTaskString = (task: Task): string => {
     const processed: ProcessedTask = {
       id: task.id,
       host: HOST,
-      code: task.code.toString(),
+      code: task.code!.toString(),
       args: task.args, 
     };
     return JSON.stringify(processed);

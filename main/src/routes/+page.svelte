@@ -1,8 +1,8 @@
 <script lang="ts">
+	import '@picocss/pico';
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import '@picocss/pico';
 	import { invalidateAll } from '$app/navigation';
 	import { Status } from '$lib/enums';
 
@@ -14,13 +14,13 @@
 		});
 	};
 
-	
-	$: finTasks = data.tasks.filter((task) => {return task.status === 'finished'})
+	$: finTasks = data.tasks.filter((task) => {
+		return task.status === 'finished';
+	});
 	/* позже разобраться
 	$: best = finTasks.reduce((prevTask, currentTask) => {
 			return prevTask.result[0] > currentTask.result[0] ? prevTask : currentTask;
 	});*/
-	
 
 	onMount(() => {
 		const interval = setInterval(() => {
@@ -33,64 +33,65 @@
 	});
 </script>
 
-<main>
-	<h1>WordGrid UI</h1>
-	<div class="container">
-		<div>
-			<h3>cluster status</h3>
-			<ul>
-				<li>topic name: {data.topic.name}</li>
-				<li>partition size: {data.topic.partitions.length}</li>
-				<li>free nodes: {data.nodeCount}</li>
-			</ul>
-		</div>
-		<div>
-			<h3>tasks status - {finTasks.length}/{data.tasks.length}</h3>
-			<ul class="overflow">
-				{#each data.tasks as task}
-					<li>task {task.id}: {task.status}</li>
-					{#if task.status == Status.finished}
-						<li>coverage {task.result[0]} words: {task.result[1].toString()}, grid: later...</li>
-					{/if}
-					<br />
-				{/each}
-			</ul>
-		</div>
-		<div>
-			<h3>actions</h3>
-			<form method="POST" action="?/init" use:enhance>
-				<button
-					>{data.topic.partitions.length == 0
-						? 'Initialize topic'
-						: 'Adjust partition size'}</button
-				>
+<div class="container">
+	<div>
+		<h3>cluster status</h3>
+		<ul>
+			<li>topic name: {data.topic.name}</li>
+			<li>partition size: {data.topic.partitions.length}</li>
+			<li>free nodes: {data.nodeCount}</li>
+		</ul>
+	</div>
+	<div>
+		<h3>tasks status - {finTasks.length}/{data.tasks.length}</h3>
+		<ul class="overflow">
+			{#each data.tasks as task}
+				<li>task {task.id}: {task.status}</li>
+				{#if task.status == Status.finished}
+					<li>coverage {task.result[0]} words: {task.result[1].toString()}, grid: later...</li>
+				{/if}
+				<br />
+			{/each}
+		</ul>
+	</div>
+	<div>
+		<h3>actions</h3>
+		<form method="POST" action="?/init" use:enhance>
+			<button
+				>{data.topic.partitions.length == 0 ? 'Initialize topic' : 'Adjust partition size'}</button
+			>
+		</form>
+		<br />
+		{#if data.topic.partitions.length > 0 && data.nodeCount === 0}
+			<form method="POST" action="?/delete" use:enhance>
+				<button>Delete topic</button>
 			</form>
 			<br />
-			{#if data.topic.partitions.length > 0 && data.nodeCount === 0}
-				<form method="POST" action="?/delete" use:enhance>
-					<button>Delete topic</button>
-				</form>
-                <br />
-			{/if}
-			{#if data.nodeCount > 0}
-				<form method="POST" action="?/send" use:enhance>
-					<button>Start sending</button>
-				</form>
-			{/if}
-		</div>
-		<div>
-			{#if finTasks.length}
-				<h3>Best result</h3>
-                <span>task {getBest(finTasks)?.id}: coverage {getBest(finTasks)?.result[0]} words: {getBest(finTasks)?.result[1].toString()}, grid: later...</span>
-			{/if}
-		</div>
+		{/if}
+		{#if data.nodeCount > 0}
+			<form method="POST" action="?/send" use:enhance>
+				<button>Start sending</button>
+			</form>
+			<br />
+		{/if}
+
+		<form method="POST" action="?/reset" use:enhance>
+			<button>Reset</button>
+		</form>
 	</div>
-</main>
+	<div>
+		{#if finTasks.length}
+			<h3>Best result</h3>
+			<span
+				>task {getBest(finTasks)?.id}: coverage {getBest(finTasks)?.result[0]} words: {getBest(
+					finTasks
+				)?.result[1].toString()}, grid: later...</span
+			>
+		{/if}
+	</div>
+</div>
 
 <style lang="scss">
-	main {
-		margin: 2rem;
-	}
 	.container {
 		max-height: calc(100vh - 100px - 4rem);
 		display: flex;

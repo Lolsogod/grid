@@ -1,13 +1,10 @@
 import type { Actions, PageServerLoad } from './$types';
-import { tasks, taskStrings } from '$lib/server/data/task';
+import { reset, tasks, taskStrings } from '$lib/server/data/task';
 import { deleteTopic, getGroupInfo, getStatus, initKafka, send } from '$lib/server/kafka';
 import { Status } from "$lib/enums";
 
-
-
 export const load = (async () => {
     return {
-        tasks: tasks.map(({ code, ...task }) => task),
         topic: await getStatus(),
         nodeCount: await getGroupInfo(),
     };
@@ -26,5 +23,9 @@ export const actions: Actions = {
             task.result = []
         })
         return send(taskStrings)
+    },
+    reset: async () => {
+        //добавить таск айди
+        return reset()
     }
 };
