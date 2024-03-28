@@ -6,6 +6,7 @@ import { Status } from "$lib/enums";
 
 export const generateProcessedTask = (task: Task): ProcessedTask => {
     const processed: ProcessedTask = {
+      parentId: task.parentId,
       id: task.id,
       code: task.code!.toString(),
       args: task.args, 
@@ -27,6 +28,7 @@ export const  generateRealTasks = (
   ) => {
     const tasks: Task[] = [];
     
+    const parentId = Math.floor(Math.random() * 1000);
     let id = 0
     let start = 0;
     let end = interval - 1;
@@ -35,6 +37,7 @@ export const  generateRealTasks = (
   
     while (end < max) {
       const task = {
+        parentId,
         id: id++,
         status: Status.pending,
         result: [],
@@ -48,6 +51,7 @@ export const  generateRealTasks = (
   
     if (start < max) {
       const task = {
+        parentId,
         id: id++,
         status: Status.pending,
         result: [],

@@ -27,7 +27,7 @@ socket.on("connect", () => {
 const computeTask = async (task: ProcessedTask): Promise<Result> => {
   //ренеймнуть
   const parsed = task;
-  console.log(`-----------task-${parsed.id}--------------`);
+  console.log(`---------task-${parsed.parentId}-${parsed.id}------------`);
   program = new Function(
     `return (${parsed.code})(${JSON.stringify(parsed.args)});`
   );
@@ -42,6 +42,7 @@ const computeTask = async (task: ProcessedTask): Promise<Result> => {
   console.log(`Task took ${msToTime(endTime - startTime)}`);
 
   return {
+    parentId: parsed.parentId,
     id: parsed.id,
     status: "finished",
     data: result,

@@ -14,7 +14,7 @@ socket.on('connect', () => {
 	socket.on('resultToMain', async (result: Result) => {
 		tasks.update((currentTasks: Task[]) => {
 			return currentTasks.map((task) => {
-				if (task.id === result.id && task.status !== 'finished') {
+				if (task.parentId === result.parentId && task.id === result.id && task.status !== 'finished') {
 					return {
 						...task,
 						status: 'finished',

@@ -1,5 +1,6 @@
 
 export type Task = {
+	parentID: number
 	id: number;
 	status: string; //потом переписать на enum
 	result: any[]; 
@@ -8,6 +9,7 @@ export type Task = {
 };
 
 export type ProcessedTask = {
+	parentID: number
 	id: number;
 	code: string;
 	args: any[];

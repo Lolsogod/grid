@@ -35,20 +35,13 @@
 
 <div class="container">
 	<div>
-		<h3>cluster status</h3>
-		<ul>
-			<li>topic name: </li>
-			<li>partition size: </li>
-			<li>free nodes: </li>
-		</ul>
-	</div>
-	<div>
 		<h3>tasks status - {finTasks.length}/{data.tasks.length}</h3>
+		<h5>id: {data.tasks[0].parentId}</h5>
 		<ul class="overflow">
 			{#each data.tasks as task}
 				<li>task {task.id}: {task.status}</li>
 				{#if task.status == Status.finished}
-					<li>coverage {task.result[0]} words: {task.result[1].toString()}, grid: later...</li>
+					<li>coverage {task.result[0]} words: {task.result[1].toString()}</li>
 				{/if}
 				<br />
 			{/each}
