@@ -2,27 +2,24 @@
 import { factorial } from "./helpers";
 import { wordSearch } from "./data/wordSearch";
 import { Status } from "$lib/enums";
-import { HOST } from "$lib/server/data"
 
-export const generateTaskString = (task: Task): string => {
+
+export const generateProcessedTask = (task: Task): ProcessedTask => {
     const processed: ProcessedTask = {
       id: task.id,
-      host: HOST,
       code: task.code!.toString(),
       args: task.args, 
     };
-    return JSON.stringify(processed);
+    return processed;
   };
   
-export const getTaskStrings = (tasks: Task[]): string[] => {
-    const result: string[] = [];
-    tasks.forEach((task) => {
-      result.push(generateTaskString(task));
-    });
-    return result;
-  };
-
-
+export const getProcessed = (tasks: Task[]): ProcessedTask[] => {
+  const result: ProcessedTask[] = [];
+  tasks.forEach((task) => {
+    result.push(generateProcessedTask(task));
+  })
+  return result
+}
 export const  generateRealTasks = (
     dictionary: string[],
     grid: Grid,
@@ -39,7 +36,6 @@ export const  generateRealTasks = (
     while (end < max) {
       const task = {
         id: id++,
-        host: HOST,
         status: Status.pending,
         result: [],
         code: wordSearch,
@@ -53,7 +49,6 @@ export const  generateRealTasks = (
     if (start < max) {
       const task = {
         id: id++,
-        host: HOST,
         status: Status.pending,
         result: [],
         code: wordSearch,

@@ -3,8 +3,8 @@ import { tasks,  } from './store';
 
 const socket = io('http://localhost:3000');
 
-export const send = async (taskStrings: string[]) => {
-	taskStrings.forEach((task) => {
+export const send = async (processed: ProcessedTask[]) => {
+	processed.forEach((task) => {
 		socket.emit('task', task);
 	});
 };

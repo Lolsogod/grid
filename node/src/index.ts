@@ -1,31 +1,32 @@
 import { io } from "socket.io-client";
-import { Result } from "./types";
+import { ProcessedTask, Result } from "./types";
 
 console.log("test node started...");
 const socket = io("http://localhost:3000");
 let program: Function;
-let free = true
+
 socket.on("connect", () => {
   console.log("Connected to server");
 
-  setInterval(() => {
-    if (free){
-      socket.emit("requestTask");
-    }
-  }, 5000);
+  socket.emit("requestTask");
 
-  socket.on("give", async (task: string) => {
-    free = false
+  socket.on("give", async (task: ProcessedTask | null) => {
     //console.log('Received task:', task);
-    const result = await computeTask(task);
-    socket.emit("taskResult", result);
-    socket.emit("requestTask");
-    free = true
+    if (task) {
+      const result = await computeTask(task);
+      socket.emit("taskResult", result);
+      socket.emit("requestTask");
+    } else {
+      setTimeout(() => {
+        socket.emit("requestTask");
+      },5000)
+    }
   });
 });
 
-const computeTask = async (task: string): Promise<Result> => {
-  const parsed: any = JSON.parse(task);
+const computeTask = async (task: ProcessedTask): Promise<Result> => {
+  //ренеймнуть
+  const parsed = task;
   console.log(`-----------task-${parsed.id}--------------`);
   program = new Function(
     `return (${parsed.code})(${JSON.stringify(parsed.args)});`

@@ -1,5 +1,5 @@
 import type { Actions, PageServerLoad } from './$types';
-import { reset, taskStrings } from '$lib/server/data/task';
+import { reset, processed } from '$lib/server/data/task';
 import { tasks } from '$lib/server/store';
 import { send } from '$lib/server/soket';
 import { Status } from '$lib/enums';
@@ -18,7 +18,7 @@ export const actions: Actions = {
             }));
         });
 
-		return send(taskStrings);
+		return send(processed);
 	},
 	reset: async () => {
 		//добавить таск айди

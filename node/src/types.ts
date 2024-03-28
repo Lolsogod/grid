@@ -3,3 +3,8 @@ export type Result = {
     status: string
     data: any
 }
+export type ProcessedTask = {
+	id: number;
+	code: string;
+	args: any[];
+};

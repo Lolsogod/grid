@@ -1,16 +1,16 @@
 import { grid, dictionary } from './';
-import { getTaskStrings, generateRealTasks } from '../stringGenerator';
+import {  generateRealTasks, getProcessed } from '../stringGenerator';
 import { factorial } from '../helpers';
 import {tasks} from '../store'
 
 //размер надо бы автоматом подсчитывать
 //export let tasks = generateRealTasks(dictionary, grid, 500000);
-export let taskStrings: string[] = []
+export let processed: ProcessedTask[] = []
 
 tasks.set(generateRealTasks(dictionary, grid, 500000))
 
 tasks.subscribe((value) => {
-	taskStrings=getTaskStrings(value)
+	processed=getProcessed(value)
 })
 export let tasksResult: Result[] = []
 
