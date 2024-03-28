@@ -1,9 +1,6 @@
-import {  tasksResult } from '$lib/server/data/task';
 import { tasks } from '$lib/server/store';
 import type { LayoutServerLoad } from './$types';
-// очень плохо
-/*
-};*/
+
 let uiTasks: Task[] = []
 tasks.subscribe((value) => {
 	if(value.length){

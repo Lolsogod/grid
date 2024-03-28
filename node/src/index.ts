@@ -19,7 +19,7 @@ socket.on("connect", () => {
     } else {
       setTimeout(() => {
         socket.emit("requestTask");
-      },5000)
+      }, 5000);
     }
   });
 });
@@ -27,7 +27,7 @@ socket.on("connect", () => {
 const computeTask = async (task: ProcessedTask): Promise<Result> => {
   //ренеймнуть
   const parsed = task;
-  console.log(`---------task-${parsed.parentId}-${parsed.id}------------`);
+  console.log(`---------task-${parsed.parentId}-sub-${parsed.id}------------`);
   program = new Function(
     `return (${parsed.code})(${JSON.stringify(parsed.args)});`
   );
@@ -38,8 +38,8 @@ const computeTask = async (task: ProcessedTask): Promise<Result> => {
 
   var endTime = performance.now();
 
-  console.log(`-----------finished--------------`);
   console.log(`Task took ${msToTime(endTime - startTime)}`);
+  console.log(`-----------finished--------------`);
 
   return {
     parentId: parsed.parentId,

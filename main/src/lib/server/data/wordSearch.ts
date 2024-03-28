@@ -109,7 +109,6 @@ export const wordSearch = (args: [string[], Grid, number, number]) => {
 		start: number,
 		end: number
 	): [number, string[], Grid] => {
-		
 		let maxCoverage = 0;
 		let bestWords: string[] = [];
 		let bestGrid: Grid = [];

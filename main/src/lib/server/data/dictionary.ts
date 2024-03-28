@@ -9,7 +9,7 @@ export const dictionary: string[] = [
     'row',
     'vertical',
     'cats',
-    'token',
+    'hello',
     'and',
     //4 nodes will solve it in 4 minutes - good for demo
     //'world',
