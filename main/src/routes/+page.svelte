@@ -62,7 +62,7 @@
 			>
 		</form>
 		<br />
-		{#if data.topic.partitions.length > 0 && data.nodeCount === 0}
+		{#if data.topic.partitions.length}
 			<form method="POST" action="?/delete" use:enhance>
 				<button>Delete topic</button>
 			</form>

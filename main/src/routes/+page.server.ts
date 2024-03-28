@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { reset, tasks, taskStrings } from '$lib/server/data/task';
-import { deleteTopic, getGroupInfo, getStatus, initKafka, send } from '$lib/server/kafka';
+import { deleteTopic, getGroupInfo, getStatus, initKafka, send, startResultConsumer } from '$lib/server/kafka';
 import { Status } from "$lib/enums";
 
 export const load = (async () => {
@@ -22,6 +22,7 @@ export const actions: Actions = {
             task.status = Status.sent
             task.result = []
         })
+        startResultConsumer()
         return send(taskStrings)
     },
     reset: async () => {

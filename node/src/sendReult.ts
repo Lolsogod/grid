@@ -1,6 +1,6 @@
 import { Result } from "./types";
 
-export const sendResult = async (host: string, result: Result) => {
+export const sendResultHttp = async (host: string, result: Result) => {
     try{
         const response = await fetch(host, {
             method: "POST",
@@ -16,6 +16,7 @@ export const sendResult = async (host: string, result: Result) => {
           console.log("Result sent successfully");
     } catch (error: any ) {
         console.error('Error sending result:', error);
-        sendResult(host,result)
+        sendResultHttp(host,result)
     }
 };
+

@@ -1,21 +1,24 @@
-
-
 type ProcessedTask = {
+	parentId: number;
 	id: number;
-	host: string;
 	code: string;
 	args: any[];
 };
 
 type Task = {
+	parentId: number;
 	id: number;
-	host: string;
 	status: string; //потом переписать на enum
-	result: any[]; 
+	result: any[];
 	code?: Function;
 	args: any[];
 };
 
-
+type Result = {
+	parrentId: number,
+    id: number,
+    status: string
+    data: any
+}
 
 type Grid = string[][];
