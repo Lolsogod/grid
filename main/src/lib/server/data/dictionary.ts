@@ -12,7 +12,7 @@ export const dictionary: string[] = [
     'token',
     'and',
     //4 nodes will solve it in 4 minutes - good for demo
-    'world',
+    //'world',
     
     // 4 nodes will solve it in 3 hours
     //'horizontal',

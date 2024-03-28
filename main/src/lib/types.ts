@@ -16,6 +16,10 @@ type Task = {
 	args: any[];
 };
 
-
+type Result = {
+    id: number,
+    status: string
+    data: any
+}
 
 type Grid = string[][];

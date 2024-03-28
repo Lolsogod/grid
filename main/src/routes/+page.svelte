@@ -37,9 +37,9 @@
 	<div>
 		<h3>cluster status</h3>
 		<ul>
-			<li>topic name: {data.topic.name}</li>
-			<li>partition size: {data.topic.partitions.length}</li>
-			<li>free nodes: {data.nodeCount}</li>
+			<li>topic name: </li>
+			<li>partition size: </li>
+			<li>free nodes: </li>
 		</ul>
 	</div>
 	<div>
@@ -56,24 +56,10 @@
 	</div>
 	<div>
 		<h3>actions</h3>
-		<form method="POST" action="?/init" use:enhance>
-			<button
-				>{data.topic.partitions.length == 0 ? 'Initialize topic' : 'Adjust partition size'}</button
-			>
+		<form method="POST" action="?/send" use:enhance>
+			<button>Start sending</button>
 		</form>
 		<br />
-		{#if data.topic.partitions.length > 0 && data.nodeCount === 0}
-			<form method="POST" action="?/delete" use:enhance>
-				<button>Delete topic</button>
-			</form>
-			<br />
-		{/if}
-		{#if data.nodeCount > 0}
-			<form method="POST" action="?/send" use:enhance>
-				<button>Start sending</button>
-			</form>
-			<br />
-		{/if}
 
 		<form method="POST" action="?/reset" use:enhance>
 			<button>Reset</button>

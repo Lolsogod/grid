@@ -1,31 +1,27 @@
 import type { Actions, PageServerLoad } from './$types';
-import { reset, tasks, taskStrings } from '$lib/server/data/task';
-import { deleteTopic, getGroupInfo, getStatus, initKafka, send } from '$lib/server/kafka';
-import { Status } from "$lib/enums";
+import { reset, taskStrings } from '$lib/server/data/task';
+import { tasks } from '$lib/server/store';
+import { send } from '$lib/server/soket';
+import { Status } from '$lib/enums';
 
 export const load = (async () => {
-    return {
-        topic: await getStatus(),
-        nodeCount: await getGroupInfo(),
-    };
+	return {};
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-    init: async () => {
-        return initKafka(taskStrings)
-    },
-    delete: async () => {
-        return deleteTopic()
-    },
-    send: async () => {
-        tasks.forEach((task) => {
-            task.status = Status.sent
-            task.result = []
-        })
-        return send(taskStrings)
-    },
-    reset: async () => {
-        //добавить таск айди
-        return reset()
-    }
+	send: async () => {
+		tasks.update((value: Task[]) => {
+            return value.map((task) => ({
+                ...task,
+                status: Status.sent,
+                result: []
+            }));
+        });
+
+		return send(taskStrings);
+	},
+	reset: async () => {
+		//добавить таск айди
+		return reset();
+	}
 };

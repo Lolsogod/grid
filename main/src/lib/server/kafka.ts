@@ -48,14 +48,7 @@ const expandTopic = async (taskStrings: string[]) => {
     }
   };
 
- export const send = async (taskStrings: string[]) => {
-    console.log("sending!");
-    await producer.connect();
-    producer.send({
-      topic: "task",
-      messages: taskStrings.map((task) => ({ value: task })),
-    });
-  };
+
 //info for ui
   export const getStatus = async () => {
     let result

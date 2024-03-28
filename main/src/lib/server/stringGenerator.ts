@@ -22,7 +22,6 @@ export const getTaskStrings = (tasks: Task[]): string[] => {
     return result;
   };
 
-  
 
 export const  generateRealTasks = (
     dictionary: string[],

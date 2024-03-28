@@ -27,6 +27,7 @@
 	"type": "module",
 	"dependencies": {
 		"@picocss/pico": "^2.0.6",
-		"kafkajs": "^2.2.4"
+		"kafkajs": "^2.2.4",
+		"socket.io-client": "^4.7.5"
 	}
 }
